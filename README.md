@@ -1,4 +1,4 @@
 brisk
 =====
 
-An left-hand search autocomplete built with C store in memory for lightning fast searches
+An left-hand search autocomplete built with C to store in memory for lightning fast searches
