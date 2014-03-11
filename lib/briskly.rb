@@ -1,13 +1,19 @@
-require "briskly/version"
+require 'briskly/version'
 
 class Briskly
   private_class_method :new
 
-  def self.instance
-    @@instance ||= new
+  @@storage = {}
+
+  def self.store(key)
+    @@storage[key] = Briskly::Store.new(key)
   end
 
-  def self.collection(key: 'default')
-    Collection.new(key)
+  def self.on(*keys)
+    stores = [keys].flatten.map { |key| @@storage[key] }
+    Briskly::Scope.new stores
   end
 end
+
+require 'briskly/store'
+require 'briskly/scope'
