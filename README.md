@@ -9,12 +9,12 @@ This is currently work in progress and should not used yet on production environ
 
 #### Storing:
 
-You can store a collection with a specific key. The data must be an array of hashes with a term and an optional metadata argument. 
+You can store a collection with a specific key. The data must be an array of hashes with a term and an optional data argument. 
 
 ```ruby
 Briskly.store('cities').with([
-  { term: 'London', metadata: { id: 10, name: London } },
-  { term: 'Berlin', metadata: { id: 15, name: Berlin } },
+  { term: 'London', data: { id: 10, name: London } },
+  { term: 'Berlin', data: { id: 15, name: Berlin } },
   { term: 'Barcelona', metada: { id: 25, name: Barcelona } }
 )]
 ```
@@ -25,11 +25,11 @@ Briskly.store('cities').with([
 
 #### Searching:
 
-Search on collections using `#on`. The result is composed by an hash with the key(s) requested and the values are instances of `Briskly::Element` class. This object responds to `#term` and `#metadata`.
+Search on collections using `#on`. The result is composed by an hash with the key(s) requested and the values are instances of `Briskly::Element` class. This object responds to `#term` and `#data`.
 ```ruby
 Briskly.store('cities').with([
-  { term: 'London', metadata: { id: 10, name: London } },
-  { term: 'Berlin', metadata: { id: 15, name: Berlin } },
+  { term: 'London', data: { id: 10, name: London } },
+  { term: 'Berlin', data: { id: 15, name: Berlin } },
   { term: 'Barcelona', metada: { id: 25, name: Barcelona } }
 )]
 

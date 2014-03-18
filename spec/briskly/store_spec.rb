@@ -19,15 +19,15 @@ describe Briskly::Store do
     subject { described_class.new('en:foo') }
 
     it 'stores an array of terms' do
-      expect(subject.with [{ term: 'foo', metadata: { :id => 100 } }]).to be_true
+      expect(subject.with [{ term: 'foo', data: { :id => 100 } }]).to be_true
     end
 
-    it 'metadata argument is optional' do
+    it 'data argument is optional' do
       expect(subject.with [{ term: 'foo' }]).to be_true
     end
 
     it 'term argument is mandatory' do
-      expect{subject.with [{ metadata: 'foo' }]}.to raise_error
+      expect{subject.with [{ data: 'foo' }]}.to raise_error
     end
   end
 
@@ -55,10 +55,10 @@ describe Briskly::Store do
       end
     end
 
-    context 'attached metadata' do
-      it 'returns respective metadata' do
-        subject.with([ term: 'bob', metadata: 1 ])
-        expect(subject.search('bob').first.metadata).to eql(1)
+    context 'attached data' do
+      it 'returns respective data' do
+        subject.with([ term: 'bob', data: 1 ])
+        expect(subject.search('bob').first.data).to eql(1)
       end
     end
 

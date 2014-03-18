@@ -7,7 +7,7 @@ describe Briskly::Element do
 
     subject { described_class.new('foo', { a: 2 }) }
 
-    it 'accepts a term and metadata' do
+    it 'accepts a term and data' do
       expect(subject).to be_a described_class
     end
 
@@ -15,8 +15,8 @@ describe Briskly::Element do
       expect(subject.term).to eql('foo')
     end
 
-    it 'allows access to its metadata' do
-      expect(subject.metadata).to eql(a: 2)
+    it 'allows access to its data' do
+      expect(subject.data).to eql(a: 2)
     end
   end
 

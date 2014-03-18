@@ -13,7 +13,7 @@ class Briskly::Store
     @store = []
 
     values.each do |value|
-      @store << Briskly::Element.new(value[:term], value[:metadata])
+      @store << Briskly::Element.new(value[:term], value[:data])
     end
   end
 
