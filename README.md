@@ -15,7 +15,7 @@ You can store a collection with a specific key. The data must be an array of has
 Briskly.store('cities').with([
   { term: 'London', data: { id: 10, name: London } },
   { term: 'Berlin', data: { id: 15, name: Berlin } },
-  { term: 'Barcelona', metada: { id: 25, name: Barcelona } }
+  { term: 'Barcelona', data: { id: 25, name: Barcelona } }
 )]
 ```
 
@@ -30,7 +30,7 @@ Search on collections using `#on`. The result is composed by an hash with the ke
 Briskly.store('cities').with([
   { term: 'London', data: { id: 10, name: London } },
   { term: 'Berlin', data: { id: 15, name: Berlin } },
-  { term: 'Barcelona', metada: { id: 25, name: Barcelona } }
+  { term: 'Barcelona', data: { id: 25, name: Barcelona } }
 )]
 
 result = Briskly.on('cities').search('lon')
