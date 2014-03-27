@@ -1,2 +1,4 @@
 .ruby-version
 *.gem
+tmp/*
+.bundle/*
