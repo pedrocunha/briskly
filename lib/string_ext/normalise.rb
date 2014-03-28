@@ -12,7 +12,7 @@ module StringNormalise
   private
 
   def _normaliser
-    @@_normalizer ||= Iconv.new('us-ascii//ignore//translit', 'utf-8')
+    @@_normalizer ||= Iconv.new('US-ASCII//IGNORE//TRANSLIT', 'UTF-8')
   end
 
   ::String.send(:include, self)
