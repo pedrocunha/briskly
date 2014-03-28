@@ -2,7 +2,7 @@ PATH
   remote: .
   specs:
     briskly (0.0.3)
-      iconv
+      i18n
 
 GEM
   remote: https://rubygems.org/
@@ -15,7 +15,7 @@ GEM
       thor (~> 0.14.6)
     guard-rspec (0.7.3)
       guard (>= 0.10.0)
-    iconv (1.0.4)
+    i18n (0.6.9)
     method_source (0.8.2)
     pry (0.9.12.6)
       coderay (~> 1.0)

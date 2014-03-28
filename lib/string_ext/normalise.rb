@@ -1,18 +1,11 @@
-require 'iconv'
+require 'i18n'
 
 module StringNormalise
   def normalise
-    _normaliser.iconv(self)
-      .to_s
+    I18n.transliterate(self)
       .downcase
       .gsub(/[^a-z -]/, '')
       .gsub(/[\s-]+/, ' ')
-  end
-
-  private
-
-  def _normaliser
-    @@_normalizer ||= Iconv.new('US-ASCII//IGNORE//TRANSLIT', 'UTF-8')
   end
 
   ::String.send(:include, self)
