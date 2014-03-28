@@ -8,11 +8,11 @@ class Briskly::Scope
     @stores = stores
   end
 
-  def search(keyword)
+  def search(keyword, options = {})
     result = {}
 
     @stores.each do |store|
-      result[store.key] = store.search(keyword)
+      result[store.key] = store.search(keyword, options)
     end
 
     result
