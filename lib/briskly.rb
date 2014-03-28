@@ -1,15 +1,15 @@
 require 'briskly/version'
 
-class Briskly
-  private_class_method :new
-
+module Briskly
   @@storage = {}
 
-  def self.store(key)
+  module_function
+
+  def store(key)
     @@storage[key] = Briskly::Store.new(key)
   end
 
-  def self.on(*keys)
+  def on(*keys)
     stores = [keys].flatten.map { |key| @@storage[key] || Briskly::Store.new(key) }
     Briskly::Scope.new stores
   end
