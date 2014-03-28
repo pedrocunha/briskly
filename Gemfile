@@ -1,3 +1,3 @@
-source 'https://rubygems.org'
+source ENV.fetch('GEM_SOURCE', 'https://rubygems.org')
 
 gemspec
