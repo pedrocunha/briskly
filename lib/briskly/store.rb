@@ -21,12 +21,14 @@ class Briskly::Store
     end
   end
 
-  def search(keyword)
+  def search(keyword, options = {})
     element = Briskly::Element.new(keyword)
-    @store.children_with_values(element.normalised)
-    .map { |_, index|
+    result  = @store.children_with_values(element.normalised).map do |_, index|
       @elements[index]
-    }
+    end
+
+    limit = options.fetch(:limit, result.length) - 1
+    result[0..limit]
   end
 end
 

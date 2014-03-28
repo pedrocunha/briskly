@@ -35,16 +35,43 @@ describe Briskly::Store do
 
     subject { described_class.new('en:foo') }
 
+
+    context 'limiting results' do
+
+      before do
+        subject.with([
+          { term: 'foo'     },
+          { term: 'foobear' },
+          { term: 'foobaz'  },
+          { term: 'fooyolo' },
+          { term: 'foocorse'},
+          { term: 'foopizza'}
+        ])
+      end
+
+      it 'returns only five elements' do
+        result = subject.search('foo', limit: 5)
+        expect(result).to have(5).items
+      end
+
+      it 'returns all results' do
+        result = subject.search('foo')
+        expect(result).to have(6).items
+      end
+
+    end
+
     context 'multiple results' do
-      let(:result) do 
+
+      before do 
         subject.with([
           { term: 'foo'     },
           { term: 'foobear' },
           { term: 'bear'    }
         ])
-
-        subject.search('foo')
       end
+
+      let(:result) { subject.search('foo') }
 
       it 'returns all matching results' do
         expect(result.length).to eql(2)
@@ -86,6 +113,7 @@ describe Briskly::Store do
         expect(subject.search('BobIsNice')).to be_empty
       end
     end
+
 
   end
 
