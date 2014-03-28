@@ -16,6 +16,7 @@ Gem::Specification.new do |gem|
   gem.version       = Briskly::VERSION
 
   gem.add_dependency 'i18n'
+  gem.add_dependency 'fast_trie'
 
   gem.add_development_dependency 'bundler', '~> 1.4'
   gem.add_development_dependency 'rake', '~> 10.0'

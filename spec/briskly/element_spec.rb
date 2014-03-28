@@ -21,36 +21,11 @@ describe Briskly::Element do
     end
   end
 
-  describe '#matches?' do
-
+  describe '#normalised' do
     subject { described_class.new('foo-bar-ão', { a: 2 }) }
 
-    it 'matches if beginning of word' do
-      expect(subject.matches?('fo')).to be_true
-    end
-
-    it 'does not match if not equal of beginning of word' do
-      expect(subject.matches?('oo')).to be_false
-    end
-
-    it 'does not match when keyword is bigger than the term' do
-      expect(subject.matches?('foo-bar-ãoa')).to be_false
-    end
-
-    it 'is case insensitive' do
-      expect(subject.matches?('FOO')).to be_true
-    end
-
-    it 'matches the space with the dash' do
-      expect(subject.matches?('foo bar')).to be_true
-    end
-
-    it 'ignores the accents' do
-      expect(subject.matches?('foo-bar-ao')).to be_true
-    end
-
-    it 'also ignores the accents on the keyword' do
-      expect(subject.matches?('foo-bar-aó')).to be_true
+    it 'removes accents and dashes' do
+      expect(subject.normalised).to eq('foo bar ao')
     end
   end
 
