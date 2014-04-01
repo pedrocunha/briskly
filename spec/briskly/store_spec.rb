@@ -121,6 +121,23 @@ describe Briskly::Store do
       end
     end
 
+    context 'overriding data' do
+
+      before do
+        subject.with([ term: 'foo', data: 1])
+        subject.with([ term: 'foo', data: 2])
+      end
+
+      it 'returns only 1 element' do
+        expect(subject.search('foo')).to have(1).item
+      end
+
+      it 'returns the right data' do
+        expect(subject.search('foo').first.data).to eql(2)
+      end
+
+    end
+
 
   end
 
