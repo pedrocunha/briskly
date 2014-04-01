@@ -7,7 +7,7 @@ class Briskly::Store
 
   def initialize(key)
     @key      = key
-    @store    = nil
+    @store    = Trie.new
     @elements = []
   end
 

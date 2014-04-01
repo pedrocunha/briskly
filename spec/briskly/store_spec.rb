@@ -112,6 +112,13 @@ describe Briskly::Store do
         subject.with([ term: 'bob' ])
         expect(subject.search('BobIsNice')).to be_empty
       end
+
+    end
+
+    context 'handling empty store' do
+      it 'returns empty array' do
+        expect(subject.search('foo')).to be_empty
+      end
     end
 
 
