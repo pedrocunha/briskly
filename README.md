@@ -1,10 +1,6 @@
 briskly [![Build Status](https://travis-ci.org/pedrocunha/briskly.png)](https://travis-ci.org/pedrocunha/briskly) [![Code Climate](https://codeclimate.com/github/pedrocunha/briskly.png)](https://codeclimate.com/github/pedrocunha/briskly)
 =====
 
-## Disclaimer
-This is currently work in progress and should not used yet on production environments
-
-
 ### Usage:
 
 #### Storing:
@@ -66,9 +62,6 @@ Notes:
 - Results are returned only if they match beginning of word
 
 
-TODO
-=============================
-- Use Ruby C extensions for faster string comparison
 
 Note on Patches/Pull Requests
 =============================
