@@ -12,11 +12,12 @@ class Briskly::Store
   end
 
   def with(values)
-    @store = Trie.new
+    @store    = Trie.new
+    @elements = []
 
-    values.each do |value|
+    values.each_with_index do |value, index|
       element = Briskly::Element.new(value[:term], value[:data])
-      @store.add element.normalised, @elements.length
+      @store.add element.normalised, index
       @elements.push element
     end
   end
@@ -34,11 +35,7 @@ class Briskly::Store
     end
 
     limit = options.fetch(:limit, result.length) - 1
-
-    max_bound = result.length - 1
-    min_bound = [0, max_bound - limit].max
-
-    result[min_bound..-1]
+    result[0..limit]
   end
 end
 
