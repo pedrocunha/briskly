@@ -1,6 +1,6 @@
 require 'pathname'
 
 module Briskly
-  VERSION = '0.0.8'
+  VERSION = '0.0.9'
   GEMDIR  = Pathname.new(__FILE__).parent.parent.parent
 end
