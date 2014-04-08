@@ -23,7 +23,13 @@ class Briskly::Store
 
   def search(keyword, options = {})
     element = Briskly::Element.new(keyword)
-    result  = @store.children_with_values(element.normalised).map do |_, index|
+    result  = @store.children_with_values(element.normalised)
+
+    # Trie will return the weight on index 1
+    result.sort! { |a,b| a[1] <=> b[1] } 
+
+    # Restore the payload
+    result.map! do |_, index|
       @elements[index]
     end
 
@@ -32,7 +38,7 @@ class Briskly::Store
     max_bound = result.length - 1
     min_bound = [0, max_bound - limit].max
 
-    result[min_bound..-1].reverse
+    result[min_bound..-1]
   end
 end
 
