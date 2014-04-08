@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    briskly (0.0.7)
+    briskly (0.0.8)
       fast_trie
       i18n
 
