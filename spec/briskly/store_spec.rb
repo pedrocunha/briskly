@@ -65,20 +65,21 @@ describe Briskly::Store do
 
       before do 
         subject.with([
-          { term: 'foo'     },
-          { term: 'foobear' },
-          { term: 'bear'    }
+          { term: 'london' },
+          { term: 'londa'  },
+          { term: 'lonato' },
+          { term: 'bear'   }
         ])
       end
 
-      let(:result) { subject.search('foo') }
+      let(:result) { subject.search('lon') }
 
       it 'returns all matching results' do
-        expect(result.length).to eql(2)
+        expect(result.length).to eql(3)
       end
 
       it 'respects the order of insertion' do
-        expect(result.map(&:term)).to eql(['foo', 'foobear'])
+        expect(result.map(&:term)).to eql(['london', 'londa', 'lonato'])
       end
     end
 

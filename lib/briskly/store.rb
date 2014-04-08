@@ -28,7 +28,11 @@ class Briskly::Store
     end
 
     limit = options.fetch(:limit, result.length) - 1
-    result[0..limit]
+
+    max_bound = result.length - 1
+    min_bound = [0, max_bound - limit].max
+
+    result[min_bound..-1].reverse
   end
 end
 
