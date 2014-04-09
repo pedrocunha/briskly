@@ -1,4 +1,4 @@
-briskly [![Build Status](https://travis-ci.org/pedrocunha/briskly.png)](https://travis-ci.org/pedrocunha/briskly) [![Code Climate](https://codeclimate.com/github/pedrocunha/briskly.png)](https://codeclimate.com/github/pedrocunha/briskly)
+briskly [![Build Status](https://travis-ci.org/pedrocunha/briskly.svg?branch=master)](https://travis-ci.org/pedrocunha/briskly) [![Code Climate](https://codeclimate.com/github/pedrocunha/briskly.png)](https://codeclimate.com/github/pedrocunha/briskly)
 =====
 
 ### Usage:
