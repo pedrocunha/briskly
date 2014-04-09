@@ -140,6 +140,25 @@ describe Briskly::Store do
 
     end
 
+    context 'same terms' do
+      before do
+        subject.with([ 
+          { term: 'foo', data: 1 },
+          { term: 'foo', data: 2 }
+        ])
+      end
+
+      let(:result) { subject.search('foo') }
+
+      it 'returns 2 results' do
+        expect(result).to have(2).items
+      end
+
+      it 'respects order' do
+        expect(result.map(&:data)).to eql [1, 2]
+      end
+    end
+
 
   end
 
