@@ -1,23 +1,22 @@
 require 'briskly'
-require 'i18n'
+require 'briskly/keyword'
 
 class Briskly::Element
 
-  attr_reader :term
   attr_reader :data
+  attr_reader :keyword
+  attr_reader :alternatives
 
-  def initialize(term, data = nil)
-    raise ArgumentError unless term
-    @term = term
-    @data = data
+  def initialize(keyword, data = nil, alternatives = [])
+    raise ArgumentError unless keyword
+
+    @keyword      = Briskly::Keyword.new(keyword)
+    @data         = data
+    @alternatives = alternatives.map { |alternative| Briskly::Keyword.new(alternative) }
   end
-  
-  def normalised
-    @_normalised ||= begin
-      I18n.transliterate(@term)
-        .downcase
-        .gsub(/[^a-z -]/, '')
-        .gsub(/[\s-]+/, ' ')
-    end
+
+  def keyword(internal = nil)
+    internal == :internal ? @keyword : @keyword.to_s
   end
+
 end

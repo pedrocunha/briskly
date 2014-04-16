@@ -18,16 +18,20 @@ describe Briskly::Store do
 
     subject { described_class.new('en:foo') }
 
-    it 'stores an array of terms' do
-      expect(subject.with [{ term: 'foo', data: { :id => 100 } }]).to be_true
+    it 'stores an element' do
+      expect(subject.with [{ keyword: 'foo', data: { :id => 100 } }]).to be_true
     end
 
     it 'data argument is optional' do
-      expect(subject.with [{ term: 'foo' }]).to be_true
+      expect(subject.with [{ keyword: 'foo' }]).to be_true
     end
 
-    it 'term argument is mandatory' do
+    it 'keywords argument is mandatory' do
       expect{subject.with [{ data: 'foo' }]}.to raise_error
+    end
+
+    it 'stores an element with an array of keywords' do
+      expect{subject.with [{ keyword: ['foo', 'bar'], data: 'foo' }]}.to_not raise_error
     end
   end
 
@@ -40,12 +44,12 @@ describe Briskly::Store do
 
       before do
         subject.with([
-          { term: 'foo'     },
-          { term: 'foobear' },
-          { term: 'foobaz'  },
-          { term: 'fooyolo' },
-          { term: 'foocorse'},
-          { term: 'foopizza'}
+          { keyword: 'foo'     },
+          { keyword: 'foobear' },
+          { keyword: 'foobaz'  },
+          { keyword: 'fooyolo' },
+          { keyword: 'foocorse'},
+          { keyword: 'foopizza'}
         ])
       end
 
@@ -65,11 +69,11 @@ describe Briskly::Store do
 
       before do 
         subject.with([
-          { term: 'london' },
-          { term: 'lon'    },
-          { term: 'londa'  },
-          { term: 'lonato' },
-          { term: 'bear'   }
+          { keyword: 'london' },
+          { keyword: 'lon'    },
+          { keyword: 'londa'  },
+          { keyword: 'lonato' },
+          { keyword: 'bear'   }
         ])
       end
 
@@ -80,38 +84,38 @@ describe Briskly::Store do
       end
 
       it 'respects the order of insertion' do
-        expect(result.map(&:term)).to eql(['london', 'lon', 'londa', 'lonato'])
+        expect(result.map(&:keyword)).to eql(['london', 'lon', 'londa', 'lonato'])
       end
     end
 
     context 'attached data' do
       it 'returns respective data' do
-        subject.with([ term: 'bob', data: 1 ])
+        subject.with([ keyword: 'bob', data: 1 ])
         expect(subject.search('bob').first.data).to eql(1)
       end
     end
 
     context 'ignores case-sensitive' do
       it 'ignores case on the keyword' do
-        subject.with([ term: 'bob' ])
-        expect(subject.search('Bob').first.term).to eql('bob')
+        subject.with([ keyword: 'bob' ])
+        expect(subject.search('Bob').first.keyword).to eql('bob')
       end
 
-      it 'ignores case on the term' do
-        subject.with([ term: 'Bob' ])
-        expect(subject.search('bob').first.term).to eql('Bob')
+      it 'ignores case on the keywords' do
+        subject.with([ keyword: 'Bob' ])
+        expect(subject.search('bob').first.keyword).to eql('Bob')
       end
     end
 
-    context 'matching partially term' do
+    context 'matching partially keywords' do
 
-      it 'returns a result if keyword length is smaller than term chars' do
-        subject.with([ term: 'bob_is_nice' ])
-        expect(subject.search('Bob').first.term).to eql('bob_is_nice')
+      it 'returns a result if keyword length is smaller than keywords chars' do
+        subject.with([ keyword: 'bob_is_nice' ])
+        expect(subject.search('Bob').first.keyword).to eql('bob_is_nice')
       end
 
-      it 'does not return a result if keyword length is bigger than term chars' do
-        subject.with([ term: 'bob' ])
+      it 'does not return a result if keyword length is bigger than keywords chars' do
+        subject.with([ keyword: 'bob' ])
         expect(subject.search('BobIsNice')).to be_empty
       end
 
@@ -126,8 +130,8 @@ describe Briskly::Store do
     context 'overriding data' do
 
       before do
-        subject.with([ term: 'foo', data: 1])
-        subject.with([ term: 'foo', data: 2])
+        subject.with([ keyword: 'foo', data: 1])
+        subject.with([ keyword: 'foo', data: 2])
       end
 
       it 'returns only 1 element' do
@@ -140,11 +144,11 @@ describe Briskly::Store do
 
     end
 
-    context 'same terms' do
+    context 'same keywords' do
       before do
         subject.with([ 
-          { term: 'foo', data: 1 },
-          { term: 'foo', data: 2 }
+          { keyword: 'foo', data: 1 },
+          { keyword: 'foo', data: 2 }
         ])
       end
 
@@ -159,6 +163,25 @@ describe Briskly::Store do
       end
     end
 
+    context 'multiple keywords' do
+      before do
+        subject.with([ 
+          { keyword: ['foo', 'bar'], data: 1 },
+          { keyword: 'bear', data: 2 },
+        ])
+      end
+
+      let(:result) { subject.search('bar') }
+
+      it 'returns 1 result for bar' do
+        expect(result).to have(1).item
+      end
+
+      it 'returns data equal to 1' do
+        expect(result.map(&:data)).to eql [1]
+      end
+
+    end
 
   end
 

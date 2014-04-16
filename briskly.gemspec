@@ -22,6 +22,7 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency 'rake', '~> 10.0'
   gem.add_development_dependency 'rspec', '~> 2.4'
   gem.add_development_dependency 'pry', '~> 0'
+  gem.add_development_dependency 'pry-nav', '~> 0'
   gem.add_development_dependency 'guard', '~> 0'
   gem.add_development_dependency 'guard-rspec', '~> 0'
 end
