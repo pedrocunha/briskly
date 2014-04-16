@@ -35,6 +35,7 @@ class Briskly::Store
 
     end
 
+
     @elements.each do |key, values|
       @store.add key, values
     end
@@ -42,14 +43,36 @@ class Briskly::Store
 
   def search(keyword, options = {})
     keyword = Briskly::Keyword.new(keyword)
+
     result  = @store.children_with_values(keyword.normalised)
                     .map(&:last)
                     .flatten(1)
                     .sort{ |a, b| a[1] <=> b[1] }
-                    .map(&:first)
 
-    limit = options.fetch(:limit, result.length) - 1
-    result[0..limit]
+    
+    limit   = options.fetch(:limit, result.length)
+    counter = 0
+    output  = []
+    related = []
+
+
+    # If n elements have the same index that
+    # means they are related. Trie will give
+    # the best keyword match on it's first
+    # position so we should ignore the others
+    #
+    # `related` keeps the list of related keywords
+    result.each do |element|
+      next if related[element[1]] 
+      related[element[1]] = true
+
+      output << element[0]
+
+      counter += 1
+      break if counter == limit
+    end
+    
+    output
   end
 end
 

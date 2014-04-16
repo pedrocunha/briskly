@@ -167,7 +167,7 @@ describe Briskly::Store do
       before do
         subject.with([ 
           { keyword: ['foo', 'bar'], data: 1 },
-          { keyword: 'bear', data: 2 },
+          { keyword: 'bear', data: 2 }
         ])
       end
 
@@ -179,6 +179,45 @@ describe Briskly::Store do
 
       it 'returns data equal to 1' do
         expect(result.map(&:data)).to eql [1]
+      end
+
+    end
+
+    context 'multiple keywords with similar names' do
+      before do
+        subject.with([ 
+          { keyword: ['foo', 'foobar'] }
+        ])
+      end
+
+      let(:result) { subject.search('foo') }
+
+      it 'returns 1 result for foo' do
+        expect(result).to have(1).item
+      end
+
+      it 'returns the element with keyword foo' do
+        expect(result.map(&:keyword)).to eql ['foo']
+      end
+
+    end
+
+    context 'multiple keywords with similar names but different elements' do
+      before do
+        subject.with([ 
+          { keyword: ['foo', 'foobar'], data: 1 },
+          { keyword: ['foobar'], data: 2 }
+        ])
+      end
+
+      let(:result) { subject.search('foo') }
+
+      it 'returns 2 result for foo' do
+        expect(result).to have(2).item
+      end
+
+      it 'returns data' do
+        expect(result.map(&:data)).to eql [1, 2]
       end
 
     end
