@@ -5,8 +5,8 @@ describe Briskly, 'integration' do
 
   before do
     described_class.store('en:foo').with([
-      { term: 'foo' },
-      { term: 'foobear' }
+      { keyword: ['foo', 'bear'] },
+      { keyword: 'foobear' }
     ])
   end
 
@@ -15,8 +15,19 @@ describe Briskly, 'integration' do
     subject { described_class.on('en:foo').search('foo') }
 
     it 'returns matching values for en:foo collection' do
-      expect(subject['en:foo'].map(&:term)).to eql(['foo', 'foobear'])
+      expect(subject['en:foo'].map(&:keyword)).to eql(['foo', 'foobear'])
     end
+
+  end
+
+  context 'alternatives' do
+
+    subject { described_class.on('en:foo').search('bear') }
+
+    it 'matches the alternative' do
+      expect(subject['en:foo'].map(&:keyword)).to eql(['bear'])
+    end
+
   end
 
   context 'limiting results' do
@@ -37,9 +48,9 @@ describe Briskly, 'integration' do
   context 'searching multiple collections' do
     before do 
       described_class.store('en:bar').with([
-        { term: 'bar' },
-        { term: 'bar-bear' },
-        { term: 'foo' }
+        { keyword: 'bar' },
+        { keyword: 'bar-bear' },
+        { keyword: 'foo' }
       ])
     end
 
@@ -50,11 +61,11 @@ describe Briskly, 'integration' do
     end
 
     it 'returns matching values for en:foo collection' do
-      expect(subject['en:foo'].map(&:term)).to eql(['foo', 'foobear'])
+      expect(subject['en:foo'].map(&:keyword)).to eql(['foo', 'foobear'])
     end
 
     it 'returns matching values for en:bar collection' do
-      expect(subject['en:bar'].map(&:term)).to eql(['foo'])
+      expect(subject['en:bar'].map(&:keyword)).to eql(['foo'])
     end
 
   end

@@ -5,13 +5,14 @@ briskly [![Build Status](https://travis-ci.org/pedrocunha/briskly.svg?branch=mas
 
 #### Storing:
 
-You can store a collection with a specific key. The data must be an array of hashes with a term and an optional data argument. 
+You can store a collection within a specific key. The data must be an array of hashes with a keyword and an optional data argument. Keyword can
+be an array.
 
 ```ruby
 Briskly.store('cities').with([
-  { term: 'London', data: { id: 10, name: London } },
-  { term: 'Berlin', data: { id: 15, name: Berlin } },
-  { term: 'Barcelona', data: { id: 25, name: Barcelona } }
+  { keyword: ['London', 'Londres'], data: { id: 10, name: London } },
+  { keyword: 'Berlin', data: { id: 15, name: Berlin } },
+  { keyword: 'Barcelona', data: { id: 25, name: Barcelona } }
 )]
 ```
 
@@ -19,35 +20,47 @@ Briskly.store('cities').with([
 - Re-using the same key **overrides** the existing collection
 
 
+
 #### Searching:
 
-Search on collections using `#on`. The result is composed by an hash with the key(s) requested and the values are instances of `Briskly::Element` class. This object responds to `#term` and `#data`.
+Search on collections using `#on`. The result is composed by an hash with the key(s) requested 
+and the values are instances of `Briskly::Element` class. This object responds to `#keyword` and `#data`.
+
 ```ruby
 Briskly.store('cities').with([
-  { term: 'London', data: { id: 10, name: London } },
-  { term: 'Berlin', data: { id: 15, name: Berlin } },
-  { term: 'Barcelona', data: { id: 25, name: Barcelona } }
+  { keyword: ['London', 'Londres'], data: { id: 10, name: London } },
+  { keyword: 'Berlin', data: { id: 15, name: Berlin } },
+  { keyword: 'Barcelona', data: { id: 25, name: Barcelona } }
 )]
 
 result = Briskly.on('cities').search('lon')
 
 result
-=> { 'cities' => [ #Briskly::Element, ... ]
+=> { 'cities' => [ #Briskly::Element ... ]
 
-result['cities'].first.term
+result['cities'].first.keyword
 => 'London'
+
+
+result = Briskly.on('cities').search('londres')
+result['cities'].first.keyword
+=> 'Londres'
+
+result['cities'].first.alternatives
+=> ['London']
+
 ```
 
 Example with multiple collections
 
 ```ruby
 Briskly.store('cities').with([
-  { term: 'Foo' },
+  { keyword: 'Foo' },
   ...
 )]
 
 Briskly.store('countries').with([
-  { term: 'Foobear' },
+  { keyword: 'Foobear' },
   ...
 )]
 

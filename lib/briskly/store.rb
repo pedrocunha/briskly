@@ -1,4 +1,5 @@
 require 'briskly'
+require 'briskly/element'
 require 'trie'
 
 class Briskly::Store
@@ -8,49 +9,47 @@ class Briskly::Store
   def initialize(key)
     @key      = key
     @store    = Trie.new
-    @elements = []
+    @elements = {}
   end
 
   def with(values)
     @store    = Trie.new
-    @elements = []
+    @elements = {}
 
     values.each_with_index do |value, index|
-      element = Briskly::Element.new(value[:term], value[:data])
 
-      # Check if term is already stored
-      # nil if not
-      trie_index = @store.get(element.normalised)
+      keywords = Array.new(1) { value[:keyword] }.flatten(1)
 
-      unless trie_index 
-        @store.add element.normalised, index
-        trie_index = index
+      keywords.each do |keyword|
+        alternatives = keywords - [ keyword ]
+        element      = Briskly::Element.new(keyword, value[:data], alternatives)
+        normalised   = element.keyword(:internal).normalised
+
+        # We need to make sure we keep the index
+        # and in order to avoid loops always order
+        # the array after each insertion
+        @elements[normalised] ||= []
+        @elements[normalised].push([element, index])
+                             .sort! { |a,b| a[1] <=> b[1] }
       end
 
-      # Keeping an ordered array so later search
-      # respects the order of terms inserted
-      @elements[trie_index] ||= []
-      @elements[trie_index].push [element, index] 
+    end
+
+    @elements.each do |key, values|
+      @store.add key, values
     end
   end
 
   def search(keyword, options = {})
-    element = Briskly::Element.new(keyword)
-
-    # 1) Get all matching elements
-    # 2) Retrieve their respective Briskly::Elements
-    # 3) Make sure we flatten the array of arrays
-    # 4) Sort by their index position
-    # 5) Get rid of the indexes and just return Briskly::Elements
-    result  = @store.children_with_values(element.normalised)
-                .map  { |_, index|  @elements[index] }
-                .flatten(1)
-                .sort { |a,b| a[1] <=> b[1] }
-                .map(&:first)
+    keyword = Briskly::Keyword.new(keyword)
+    result  = @store.children_with_values(keyword.normalised)
+                    .map(&:last)
+                    .flatten(1)
+                    .sort{ |a, b| a[1] <=> b[1] }
+                    .map(&:first)
 
     limit = options.fetch(:limit, result.length) - 1
     result[0..limit]
   end
 end
 
-require 'briskly/element'
