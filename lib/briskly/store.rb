@@ -9,12 +9,11 @@ class Briskly::Store
   def initialize(key)
     @key      = key
     @store    = Trie.new
-    @elements = {}
   end
 
   def with(values)
     @store    = Trie.new
-    @elements = {}
+    elements = {}
 
     values.each_with_index do |value, index|
 
@@ -28,15 +27,15 @@ class Briskly::Store
         # We need to make sure we keep the index
         # and in order to avoid loops always order
         # the array after each insertion
-        @elements[normalised] ||= []
-        @elements[normalised].push([element, index])
+        elements[normalised] ||= []
+        elements[normalised].push([element, index])
                              .sort! { |a,b| a[1] <=> b[1] }
       end
 
     end
 
 
-    @elements.each do |key, values|
+    elements.each do |key, values|
       @store.add key, values
     end
   end
