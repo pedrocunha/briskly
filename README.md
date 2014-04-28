@@ -41,14 +41,9 @@ result
 result['cities'].first.keyword
 => 'London'
 
-
 result = Briskly.on('cities').search('londres')
 result['cities'].first.keyword
 => 'Londres'
-
-result['cities'].first.alternatives
-=> ['London']
-
 ```
 
 Example with multiple collections

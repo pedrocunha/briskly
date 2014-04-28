@@ -21,8 +21,7 @@ class Briskly::Store
       keywords = Array.new(1) { value[:keyword] }.flatten(1)
 
       keywords.each do |keyword|
-        alternatives = keywords - [ keyword ]
-        element      = Briskly::Element.new(keyword, value[:data], alternatives)
+        element      = Briskly::Element.new(keyword, value[:data])
         normalised   = element.keyword(:internal).normalised
 
         # We need to make sure we keep the index
