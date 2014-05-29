@@ -1,7 +1,7 @@
 briskly [![Build Status](https://travis-ci.org/pedrocunha/briskly.svg?branch=master)](https://travis-ci.org/pedrocunha/briskly) [![Code Climate](https://codeclimate.com/github/pedrocunha/briskly.png)](https://codeclimate.com/github/pedrocunha/briskly)
 =====
 
-This gem currently powers up the HouseTrip autocomplete with a total of ~96k keywords. The memory usage per unicorn worker (sinatra app) is around 300MB~. 
+This gem currently powers up the HouseTrip autocomplete with a total of **~96k keywords**. The memory usage per unicorn worker (sinatra app) is around **300MB~**. 
 
 ### Usage:
 
