@@ -69,7 +69,9 @@ Notes:
 - Search is not case sensitive
 - Results are returned only if they match beginning of word
 
+#### Production use
 
+This gem currently powers up the HouseTrip autocomplete with a total of ~96k keywords. The memory usage per unicorn worker (sinatra app) is around 300MB~. 
 
 Note on Patches/Pull Requests
 =============================
