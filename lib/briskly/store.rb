@@ -9,14 +9,14 @@ class Briskly::Store
   def initialize(key)
     @key      = key
     @store    = Trie.new
-    @elements = {}
+    @index = 0
   end
 
   def with(values)
-    @store    = Trie.new
-    @elements = {}
+    @elements = Hash.new { |hash, key| hash[key] = [] }
 
     values.each_with_index do |value, index|
+      element_index = @index + index
 
       keywords = Array.new(1) { value[:keyword] }.flatten(1)
 
@@ -27,17 +27,17 @@ class Briskly::Store
         # We need to make sure we keep the index
         # and in order to avoid loops always order
         # the array after each insertion
-        @elements[normalised] ||= []
-        @elements[normalised].push([element, index])
+        @elements[normalised].push([element, element_index])
                              .sort! { |a,b| a[1] <=> b[1] }
       end
-
     end
 
-
+    @index = values.length
     @elements.each do |key, values|
       @store.add key, values
     end
+
+    self
   end
 
   def search(keyword, options = {})
