@@ -10,7 +10,7 @@ module Briskly
   end
 
   def on(*keys)
-    stores = [keys].flatten.map { |key| @@storage[key] || Briskly::Store.new(key) }
+    stores = Array(keys).map { |key| @@storage[key] || Briskly::Store.new(key) }
     Briskly::Scope.new stores
   end
 end
