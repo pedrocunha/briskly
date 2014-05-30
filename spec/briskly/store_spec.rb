@@ -33,12 +33,34 @@ describe Briskly::Store do
     it 'stores an element with an array of keywords' do
       expect{subject.with [{ keyword: ['foo', 'bar'], data: 'foo' }]}.to_not raise_error
     end
+
+    its 'chainable' do 
+      expect(subject
+        .with([{ keyword: 'bar' }])
+        .with([{ keyword: 'baz' }])).to be_true
+    end
+  
   end
 
   describe '#search' do
 
     subject { described_class.new('en:foo') }
 
+    context 'with append keywords' do
+
+      before do 
+        subject
+          .with([ { keyword: 'lissabon' } ])
+          .with([ { keyword: 'lisbon'  } ])
+      end
+
+      let(:result) { subject.search('lis') }
+
+      it 'returns all matching' do 
+        expect(result.length).to eql(2)
+      end
+
+    end
 
     context 'limiting results' do
 
