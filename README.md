@@ -12,9 +12,9 @@ be an array.
 
 ```ruby
 Briskly.store('cities').with([
-  { keyword: ['London', 'Londres'], data: { id: 10, name: London } },
-  { keyword: 'Berlin', data: { id: 15, name: Berlin } },
-  { keyword: 'Barcelona', data: { id: 25, name: Barcelona } }
+  { keyword: ['London', 'Londres'], data: { id: 10, name: 'London' } },
+  { keyword: 'Berlin', data: { id: 15, name: 'Berlin' } },
+  { keyword: 'Barcelona', data: { id: 25, name: 'Barcelona' } }
 )]
 ```
 
@@ -30,9 +30,9 @@ and the values are instances of `Briskly::Element` class. This object responds t
 
 ```ruby
 Briskly.store('cities').with([
-  { keyword: ['London', 'Londres'], data: { id: 10, name: London } },
-  { keyword: 'Berlin', data: { id: 15, name: Berlin } },
-  { keyword: 'Barcelona', data: { id: 25, name: Barcelona } }
+  { keyword: ['London', 'Londres'], data: { id: 10, name: 'London' } },
+  { keyword: 'Berlin', data: { id: 15, name: 'Berlin' } },
+  { keyword: 'Barcelona', data: { id: 25, name: 'Barcelona' } }
 )]
 
 result = Briskly.on('cities').search('lon')
