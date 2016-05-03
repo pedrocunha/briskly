@@ -11,7 +11,7 @@ Gem::Specification.new do |gem|
   }
   gem.homepage      = 'http://github.com/pedrocunha/briskly'
   gem.license       = 'MIT'
-  gem.files         = `git ls-files`.split($\)
+  gem.files         = Dir.glob("lib/**/*") + %w(README.md LICENSE)
   gem.require_paths = ['lib']
   gem.version       = Briskly::VERSION
 
