@@ -9,14 +9,14 @@ class Briskly::Store
   def initialize(key)
     @key      = key
     @store    = Trie.new
-    @elements = {}
+    @index = 0
+    @elements = Hash.new { |hash, k| hash[k] = [] }
   end
 
   def with(values)
-    @store    = Trie.new
-    @elements = {}
 
-    values.each_with_index do |value, index|
+    values.each do |value|
+      @index +=1
 
       keywords = Array.new(1) { value[:keyword] }.flatten(1)
 
@@ -24,20 +24,25 @@ class Briskly::Store
         element      = Briskly::Element.new(keyword, value[:data])
         normalised   = element.keyword(:internal).normalised
 
+        # Overriding
+        if @store.has_key?(normalised)
+          @store.delete(normalised)
+          @elements[normalised].clear
+        end
+
         # We need to make sure we keep the index
         # and in order to avoid loops always order
         # the array after each insertion
-        @elements[normalised] ||= []
-        @elements[normalised].push([element, index])
+        @elements[normalised].push([element, @index])
                              .sort! { |a,b| a[1] <=> b[1] }
       end
-
     end
-
 
     @elements.each do |key, values|
       @store.add key, values
     end
+
+    self
   end
 
   def search(keyword, options = {})
@@ -48,7 +53,7 @@ class Briskly::Store
                     .flatten(1)
                     .sort{ |a, b| a[1] <=> b[1] }
 
-    
+
     limit   = options.fetch(:limit, result.length)
     counter = 0
     output  = []
@@ -62,7 +67,7 @@ class Briskly::Store
     #
     # `related` keeps the list of related keywords
     result.each do |element|
-      next if related[element[1]] 
+      next if related[element[1]]
       related[element[1]] = true
 
       output << element[0]
@@ -70,7 +75,7 @@ class Briskly::Store
       counter += 1
       break if counter == limit
     end
-    
+
     output
   end
 end
